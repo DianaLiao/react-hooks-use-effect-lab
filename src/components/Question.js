@@ -1,9 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Question({ question, onAnswered }) {
   const [timeRemaining, setTimeRemaining] = useState(10);
 
   // add useEffect code
+  useEffect(() =>{
+    // console.log(timeRemaining)
+    if (timeRemaining > 0){
+      countdownTimer()
+    }
+    else if (timeRemaining === 0){
+      // console.log("time is up")
+      onAnswered(false)
+    }
+
+    return function cleanup() {
+      // console.log("cleaning up")
+      clearTimeout(countdownTimer)
+    }
+  }, [timeRemaining])
+
+
+
+  function countdownTimer(){
+    setTimeout(() => setTimeRemaining(prevTime => prevTime - 1),1000)
+  }
 
   function handleAnswer(isCorrect) {
     setTimeRemaining(10);
